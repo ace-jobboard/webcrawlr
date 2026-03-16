@@ -1,0 +1,54 @@
+name: Test Email Report
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-email:
+    name: Send Test Email
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests beautifulsoup4
+
+      - name: Create dummy results
+        run: |
+          mkdir -p test-results
+          cat > test-results/results_test.json << 'EOF'
+          {
+            "site_name": "Test Site",
+            "base_url": "https://example.com",
+            "checked_at": "2026-03-16T13:00:00Z",
+            "total_checked": 42,
+            "broken_count": 2,
+            "broken": [
+              {
+                "url": "https://example.com/missing-page",
+                "status": 404,
+                "ok": false,
+                "error": null,
+                "found_on": "https://example.com/"
+              },
+              {
+                "url": "https://old-partner-site.com",
+                "status": null,
+                "ok": false,
+                "error": "Connection error",
+                "found_on": "https://example.com/partners"
+              }
+            ]
+          }
+          EOF
+
+      - name: Send test email
+        env:
+          SMTP_HOST:  ${{ secrets.SMTP_HOST }}
+          SMTP_PORT:  ${{ secrets.SMTP_PORT }}
+          SMTP_USER:  ${{ secrets.SMTP_USER }}
+          SMTP_PASS:  ${{ secrets.SMTP_PASS }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO:   ${{ secrets.EMAIL_TO }}
+        run: python link_checker.py --report --results-dir test-results
