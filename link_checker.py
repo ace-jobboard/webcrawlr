@@ -25,7 +25,7 @@ from bs4 import BeautifulSoup
 # ── Configuration ─────────────────────────────────────────────────────────────
 BASE_URL        = os.environ.get("BASE_URL", "")
 SITE_NAME       = os.environ.get("SITE_NAME", BASE_URL)
-MAX_PAGES       = int(os.environ.get("MAX_PAGES", "500"))
+MAX_PAGES       = int(os.environ.get("MAX_PAGES", "1000"))
 REQUEST_TIMEOUT = int(os.environ.get("REQUEST_TIMEOUT", "10"))
 DELAY_SECONDS   = float(os.environ.get("DELAY_SECONDS", "0.5"))
 USER_AGENT      = "UniversityLinkBot/2.0 (internal monitoring)"
@@ -58,6 +58,36 @@ def normalize(url):
 def is_crawlable(url):
     p = urlparse(url)
     return p.scheme in ("http", "https") and same_domain(url, BASE_URL)
+
+MEDIA_EXTENSIONS = {
+    ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".ico", ".bmp",
+    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".zip",
+    ".rar", ".mp4", ".mp3", ".webm", ".avi", ".mov", ".woff", ".woff2",
+    ".ttf", ".eot",
+}
+SKIP_PATH_PATTERNS = (
+    "/wp-content/uploads/",   # media files
+    "/wp-json/",              # REST API
+)
+import re as _re
+_ARCHIVE_RE = _re.compile(r"/\d{4}(/\d{2})?/?$")  # /2023 or /2023/04
+
+def should_crawl_for_links(url):
+    """True if we should fetch this page and extract links from it.
+    False for media files and WordPress archive/category/author index pages
+    (we still check them as links, we just don't queue them for crawling)."""
+    p = urlparse(url)
+    path = p.path.lower()
+    if any(path.endswith(ext) for ext in MEDIA_EXTENSIONS):
+        return False
+    if any(pat in path for pat in SKIP_PATH_PATTERNS):
+        return False
+    if _ARCHIVE_RE.search(p.path):
+        return False
+    for segment in ("/category/", "/author/", "/tag/", "/page/"):
+        if segment in path:
+            return False
+    return True
 
 SESSION = requests.Session()
 SESSION.headers.update({"User-Agent": USER_AGENT})
@@ -126,13 +156,13 @@ def crawl():
         for link in extract_links(resp.text, page_url):
             if link in checked_urls:
                 continue
-            if is_crawlable(link):
+            if is_crawlable(link) and should_crawl_for_links(link):
                 checked_urls[link] = None
                 if link not in visited_pages:
                     visited_pages.add(link)
                     queue.append(link)
             else:
-                log.info(f"  Checking external: {link}")
+                log.info(f"  Checking: {link}")
                 ext = check_url(link)
                 ext["found_on"] = page_url
                 checked_urls[link] = ext
