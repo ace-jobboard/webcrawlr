@@ -12,7 +12,7 @@ on:
 
 jobs:
 
-  # ── Site 1 ── starts at :00 ──────────────────────────────────────────────────
+  # ── Site 1 ────────────────────────────────────────────────────────────────────
   crawl-site-1:
     name: "Crawl: ${{ vars.SITE_1_NAME }}"
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
           path: results_*.json
           retention-days: 7
 
-  # ── Site 2 ── starts after 10-min delay ──────────────────────────────────────
+  # ── Site 2 ────────────────────────────────────────────────────────────────────
   crawl-site-2:
     name: "Crawl: ${{ vars.SITE_2_NAME }}"
     runs-on: ubuntu-latest
@@ -48,8 +48,6 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install requests beautifulsoup4
-      - name: Stagger start (10 min)
-        run: sleep 600
       - name: Crawl
         env:
           BASE_URL:        ${{ vars.SITE_2_URL }}
@@ -64,7 +62,7 @@ jobs:
           path: results_*.json
           retention-days: 7
 
-  # ── Site 3 ── starts after 20-min delay ──────────────────────────────────────
+  # ── Site 3 ────────────────────────────────────────────────────────────────────
   crawl-site-3:
     name: "Crawl: ${{ vars.SITE_3_NAME }}"
     runs-on: ubuntu-latest
@@ -75,8 +73,6 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install requests beautifulsoup4
-      - name: Stagger start (20 min)
-        run: sleep 1200
       - name: Crawl
         env:
           BASE_URL:        ${{ vars.SITE_3_URL }}
@@ -91,7 +87,7 @@ jobs:
           path: results_*.json
           retention-days: 7
 
-  # ── Site 4 ── starts after 30-min delay ──────────────────────────────────────
+  # ── Site 4 ────────────────────────────────────────────────────────────────────
   crawl-site-4:
     name: "Crawl: ${{ vars.SITE_4_NAME }}"
     runs-on: ubuntu-latest
@@ -102,8 +98,6 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install requests beautifulsoup4
-      - name: Stagger start (30 min)
-        run: sleep 1800
       - name: Crawl
         env:
           BASE_URL:        ${{ vars.SITE_4_URL }}
@@ -118,7 +112,7 @@ jobs:
           path: results_*.json
           retention-days: 7
 
-  # ── Site 5 ── starts after 40-min delay ──────────────────────────────────────
+  # ── Site 5 ────────────────────────────────────────────────────────────────────
   crawl-site-5:
     name: "Crawl: ${{ vars.SITE_5_NAME }}"
     runs-on: ubuntu-latest
@@ -129,8 +123,6 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install requests beautifulsoup4
-      - name: Stagger start (40 min)
-        run: sleep 2400
       - name: Crawl
         env:
           BASE_URL:        ${{ vars.SITE_5_URL }}
