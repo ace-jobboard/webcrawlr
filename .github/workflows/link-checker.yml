@@ -27,9 +27,10 @@ jobs:
         env:
           BASE_URL:        ${{ vars.SITE_1_URL }}
           SITE_NAME:       ${{ vars.SITE_1_NAME }}
-          MAX_PAGES:       ${{ vars.MAX_PAGES || '500' }}
+          MAX_PAGES:       ${{ vars.MAX_PAGES || '1000' }}
           REQUEST_TIMEOUT: ${{ vars.REQUEST_TIMEOUT || '10' }}
           DELAY_SECONDS:   ${{ vars.DELAY_SECONDS || '0.5' }}
+          CHECK_EXTERNAL:  ${{ vars.CHECK_EXTERNAL || 'false' }}
         run: python link_checker.py || true   # don't fail — report job decides
       - uses: actions/upload-artifact@v4
         with:
@@ -52,9 +53,10 @@ jobs:
         env:
           BASE_URL:        ${{ vars.SITE_2_URL }}
           SITE_NAME:       ${{ vars.SITE_2_NAME }}
-          MAX_PAGES:       ${{ vars.MAX_PAGES || '500' }}
+          MAX_PAGES:       ${{ vars.MAX_PAGES || '1000' }}
           REQUEST_TIMEOUT: ${{ vars.REQUEST_TIMEOUT || '10' }}
           DELAY_SECONDS:   ${{ vars.DELAY_SECONDS || '0.5' }}
+          CHECK_EXTERNAL:  ${{ vars.CHECK_EXTERNAL || 'false' }}
         run: python link_checker.py || true
       - uses: actions/upload-artifact@v4
         with:
@@ -77,9 +79,10 @@ jobs:
         env:
           BASE_URL:        ${{ vars.SITE_3_URL }}
           SITE_NAME:       ${{ vars.SITE_3_NAME }}
-          MAX_PAGES:       ${{ vars.MAX_PAGES || '500' }}
+          MAX_PAGES:       ${{ vars.MAX_PAGES || '1000' }}
           REQUEST_TIMEOUT: ${{ vars.REQUEST_TIMEOUT || '10' }}
           DELAY_SECONDS:   ${{ vars.DELAY_SECONDS || '0.5' }}
+          CHECK_EXTERNAL:  ${{ vars.CHECK_EXTERNAL || 'false' }}
         run: python link_checker.py || true
       - uses: actions/upload-artifact@v4
         with:
@@ -102,9 +105,10 @@ jobs:
         env:
           BASE_URL:        ${{ vars.SITE_4_URL }}
           SITE_NAME:       ${{ vars.SITE_4_NAME }}
-          MAX_PAGES:       ${{ vars.MAX_PAGES || '500' }}
+          MAX_PAGES:       ${{ vars.MAX_PAGES || '1000' }}
           REQUEST_TIMEOUT: ${{ vars.REQUEST_TIMEOUT || '10' }}
           DELAY_SECONDS:   ${{ vars.DELAY_SECONDS || '0.5' }}
+          CHECK_EXTERNAL:  ${{ vars.CHECK_EXTERNAL || 'false' }}
         run: python link_checker.py || true
       - uses: actions/upload-artifact@v4
         with:
@@ -127,9 +131,10 @@ jobs:
         env:
           BASE_URL:        ${{ vars.SITE_5_URL }}
           SITE_NAME:       ${{ vars.SITE_5_NAME }}
-          MAX_PAGES:       ${{ vars.MAX_PAGES || '500' }}
+          MAX_PAGES:       ${{ vars.MAX_PAGES || '1000' }}
           REQUEST_TIMEOUT: ${{ vars.REQUEST_TIMEOUT || '10' }}
           DELAY_SECONDS:   ${{ vars.DELAY_SECONDS || '0.5' }}
+          CHECK_EXTERNAL:  ${{ vars.CHECK_EXTERNAL || 'false' }}
         run: python link_checker.py || true
       - uses: actions/upload-artifact@v4
         with:

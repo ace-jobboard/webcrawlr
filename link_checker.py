@@ -28,6 +28,7 @@ SITE_NAME       = os.environ.get("SITE_NAME", BASE_URL)
 MAX_PAGES       = int(os.environ.get("MAX_PAGES", "1000"))
 REQUEST_TIMEOUT = int(os.environ.get("REQUEST_TIMEOUT", "10"))
 DELAY_SECONDS   = float(os.environ.get("DELAY_SECONDS", "0.5"))
+CHECK_EXTERNAL  = os.environ.get("CHECK_EXTERNAL", "false").lower() == "true"
 USER_AGENT      = "UniversityLinkBot/2.0 (internal monitoring)"
 
 SMTP_HOST  = os.environ.get("SMTP_HOST", "smtp.gmail.com")
@@ -161,7 +162,7 @@ def crawl():
                 if link not in visited_pages:
                     visited_pages.add(link)
                     queue.append(link)
-            else:
+            elif CHECK_EXTERNAL or is_crawlable(link):
                 log.info(f"  Checking: {link}")
                 ext = check_url(link)
                 ext["found_on"] = page_url
