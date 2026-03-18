@@ -17,6 +17,7 @@ jobs:
     name: "Crawl: ${{ vars.SITE_1_NAME }}"
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    environment: webcrawlr
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -43,6 +44,7 @@ jobs:
     name: "Crawl: ${{ vars.SITE_2_NAME }}"
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    environment: webcrawlr
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -69,6 +71,7 @@ jobs:
     name: "Crawl: ${{ vars.SITE_3_NAME }}"
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    environment: webcrawlr
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -95,6 +98,7 @@ jobs:
     name: "Crawl: ${{ vars.SITE_4_NAME }}"
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    environment: webcrawlr
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -121,6 +125,7 @@ jobs:
     name: "Crawl: ${{ vars.SITE_5_NAME }}"
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    environment: webcrawlr
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -147,7 +152,8 @@ jobs:
     name: Send Combined Email Report
     runs-on: ubuntu-latest
     needs: [crawl-site-1, crawl-site-2, crawl-site-3, crawl-site-4, crawl-site-5]
-    if: always()   # run even if some crawl jobs failed
+    if: always()
+    environment: webcrawlr   # run even if some crawl jobs failed
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
