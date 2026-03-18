@@ -16,7 +16,7 @@ jobs:
   crawl-site-1:
     name: "Crawl: ${{ vars.SITE_1_NAME }}"
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,7 +42,7 @@ jobs:
   crawl-site-2:
     name: "Crawl: ${{ vars.SITE_2_NAME }}"
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -68,7 +68,7 @@ jobs:
   crawl-site-3:
     name: "Crawl: ${{ vars.SITE_3_NAME }}"
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -94,7 +94,7 @@ jobs:
   crawl-site-4:
     name: "Crawl: ${{ vars.SITE_4_NAME }}"
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -120,7 +120,7 @@ jobs:
   crawl-site-5:
     name: "Crawl: ${{ vars.SITE_5_NAME }}"
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
