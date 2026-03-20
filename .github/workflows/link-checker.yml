@@ -174,7 +174,7 @@ jobs:
           SMTP_USER:  ${{ secrets.SMTP_USER }}
           SMTP_PASS:  ${{ secrets.SMTP_PASS }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-          EMAIL_TO:   ${{ secrets.EMAIL_TO }}
+          EMAIL_TO:   "ngimet@ace-education.com,dancelot@ace-education.com,bperissere@ace-education.com,amaabdi@ace-education.com,clalaquit@ace-education.com,gpereira@ace-education.com,vdiriart@ace-education.com,david@launchmappers.com,aperraud@ace-education.com,pissachar@ace-education.com,acarbone@ace-education.com,mauger@ace-education.com"
         run: |
           FLAGS="--report --results-dir all-results"
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
