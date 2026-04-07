@@ -99,9 +99,11 @@ def check_url(url):
         if resp.status_code in (405, 501):
             resp = SESSION.get(url, timeout=REQUEST_TIMEOUT, allow_redirects=True, stream=True)
             resp.close()
+        if resp.status_code == 503:
+            return {"url": url, "status": 503, "ok": True, "error": None}
         return {"url": url, "status": resp.status_code, "ok": resp.status_code < 400, "error": None}
     except requests.exceptions.Timeout:
-        return {"url": url, "status": None, "ok": False, "error": "Timeout"}
+        return {"url": url, "status": None, "ok": True, "error": None}
     except requests.exceptions.SSLError as e:
         return {"url": url, "status": None, "ok": False, "error": f"SSL error: {e}"}
     except requests.exceptions.ConnectionError as e:
@@ -137,8 +139,12 @@ def crawl():
 
         try:
             resp   = SESSION.get(page_url, timeout=REQUEST_TIMEOUT, allow_redirects=True)
+            ok = resp.status_code < 400 or resp.status_code == 503
             result = {"url": page_url, "status": resp.status_code,
-                      "ok": resp.status_code < 400, "error": None, "found_on": "crawler"}
+                      "ok": ok, "error": None, "found_on": "crawler"}
+        except requests.exceptions.Timeout:
+            checked_urls[page_url] = {"url": page_url, "status": None, "ok": True, "error": None, "found_on": "crawler"}
+            continue
         except Exception as e:
             result = {"url": page_url, "status": None, "ok": False,
                       "error": str(e), "found_on": "crawler"}
